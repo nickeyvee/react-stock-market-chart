@@ -1,0 +1,120 @@
+body {
+  /* padding: 50px; */
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.highlight {
+	color: #0288d1 !important;
+}
+
+.underline {
+	position: relative;
+	box-shadow: -0.5px 0 0 #0288d1;
+	opacity: 0;
+	margin-left: 33px;
+	height: 2px;
+	width: 1px;
+	background: #0288d1;
+}
+
+.topbar { 
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 99;
+	width: 100%;
+	background: #FFA948;
+	padding: 3px 0;
+	text-align: center; 
+	color: white;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.active {
+	border-bottom: 2px solid #03a9f4 !important;
+}
+
+.loader svg.lds-rolling {
+	position: absolute;
+	left: 45%;
+	top: 43%;
+}
+
+.loading {
+	opacity: 0.4;
+}
+
+#chart svg {
+	/*opacity: 0.4;*/
+}
+
+.js-toggle-ticker {
+	cursor: pointer;
+}
+
+.chart-wrapper.card-content {
+	min-height: 420.667px;
+}
+
+.chart-wrapper .card-action {
+	padding-bottom: 0 !important;
+}
+
+button.js-time-period {
+	background: white;
+	border: none;
+	display: inline-block;
+	padding-bottom: 17px;
+	margin-right: 8px;
+	width: 35px;
+}
+
+.js-toggle-ticker:focus {
+	color: #0288d1 !important;
+	font-weight: 700;
+}
+
+.js-toggle-ticker .card-title {
+	font-weight: 500;
+	color: rgb(183, 196, 216);
+}
+
+.card .card-action {
+	border-top: none !important;
+	border-bottom: 1px solid rgba(160, 160, 160, 0.2);
+}
+
+div .card-content {
+	margin-top: 15px;
+}
+
+.domain {
+	display: none !important;
+}
+
+.c3-event-rects {
+	cursor: crosshair;
+}
+
+#search_bar .card-action {
+	padding-bottom: 25px;
+}
+
+.card-action button.add-stock {
+	background: white;
+	transition: 0.4s !important;	
+	color: #81d4fa !important;
+	font-weight: 600;
+	padding: 8px 17px;
+	border-radius: 2px;
+	border: 2px solid #81d4fa;
+}
+
+.card-action button.add-stock:hover {
+	transition: 0.4s !important;
+	color: #0288d1 !important;
+	border: 2px solid #0288d1;
+}
