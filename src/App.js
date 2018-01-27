@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import service from './data/api.js';
+import io from 'socket.io-client';
 import axios from 'axios';
 import './App.css';
 
 import chart from './chart/c3-chart.js';
+import StockChart from './components/StockChart.js';
 
 
 class Search extends Component {
@@ -11,29 +14,11 @@ class Search extends Component {
 		this.state = { value: '' };
 
 		this.handleChange = this.handleChange.bind(this);
-		this.addStock = this.addStock.bind(this);
+		this.addStockEvent = this.addStockEvent.bind(this);
 	}
 
-	addStock(event) {
-
-		const symbol = this.state.value;
-		const exists = this.props.tickers.find(stock => stock === symbol);
-		const re = /^[A-Z]+$/;
-
-		if (!re.test(symbol)) {
-			console.warn('Symbol can only contain letters [a-z]');
-			return;
-		} else if (symbol.length > 5) {
-			console.warn('Valid symbols can be no longer than 5 characters in length');
-			return;
-		}
-
-		if (exists) {
-			return console.warn(`Ticker ${symbol} was already added`);
-		} else {
-			alert('A name was submitted: ' + this.state.value);
-		}
-		this.props.callback(this.state.value, this.props.dateRange);
+	addStockEvent() {
+		this.props.addStock(this.state.value);
 	}
 
 	handleChange(event) {
@@ -49,7 +34,7 @@ class Search extends Component {
 						onChange={this.handleChange} placeholder="AAPL" maxLength="5"></input>
 				</div>
 				<div className="card-action">
-					<button className="add-stock" onClick={this.addStock}>Add</button>
+					<button className="add-stock" onClick={this.addStockEvent}>Add</button>
 				</div>
 			</div>
 		)
@@ -64,53 +49,29 @@ class TickerColumn extends Component {
 		this.removeStock = this.removeStock.bind(this);
 	}
 
-	addStock(symbol, range) {
+	addStock(symbol) {
+		// console.log(this.props.appState.selectedSymbol);
+		// console.log(this.props.tickers.map(d => d[0].symbol));
+		const valid = service.validate(symbol, this.props.tickers);
 
-		axios.post('/data/add', {
-			'symbol': symbol,
-			'range': range
-		}).then(d => {
-			const newArray = this.props.tickers;
-			newArray.splice(0, newArray.length);
-			d.data.map(d => newArray.push(d));
-
-			this.props.parentState({ stockData: newArray, selectedSymbol: symbol });
-
-			chart.draw(this.props.tickers, symbol);
-		});
+		if (valid) {
+			service.add(symbol, this.props.tickers, this.props.appState.dateRange)
+				.then(data => {
+					this.props.setAppState({ stockData: data, selectedSymbol: symbol });
+					chart.draw(data, symbol);
+					console.log(this.props.tickers.map(d => d[0].symbol));
+				})
+		}
 	}
 
 	removeStock(event) {
-		const symbols = this.props.tickers.map(d => d[0].symbol);
-		const newState = this.props.tickers;
-		const symbol = event.target.id;
-		const index = symbols.indexOf(symbol);
-
-		if (index > -1) {
-			// reset state here
-			newState.splice(index, 1);
-			// console.log(this.props.tickers.map(d => d[0].symbol));
-			// console.log(this.props.selectedSymbol);
-
-			if (symbol === this.props.selectedSymbol) {
-				// reset state
-				this.props.parentState({ 
-					stockData: newState, 
-					selectedSymbol: this.props.tickers[0][0].symbol 
-				});
-
-				chart.draw(this.props.tickers, this.props.tickers[0][0].symbol);
-			} else {
-				console.log('case 3');
-				this.props.parentState({ stockData: newState, selectedSymbol: symbol });
-			}
-
-			axios.delete('data/remove', {
-				'symbol': symbol
-			}).catch(err => {
-				console.warn(err);
-			});
-		}
+		// console.log(this.props.appState.selectedSymbol);
+		// console.log(this.props.tickers.map(d => d[0].symbol));
+		service.remove(event, this.props.tickers, this.props.appState.selectedSymbol,
+			(newState, symbol) => {
+				this.props.setAppState({ stockData: newState, selectedSymbol: symbol });
+				// console.log(this.props.tickers.map(d => d[0].symbol));				
+			})
 	}
 
 	render() {
@@ -130,103 +91,35 @@ class TickerColumn extends Component {
 		return (
 			<div className="tickers js-tickers row" >
 				{tickerRows}
-				< div className="col s12 m12 l4" >
+				<div className="col s12 m12 l4">
 					<Search tickers={this.props.tickers}
-						dateRange={this.props.dateRange} callback={this.addStock} />
+						dateRange={this.props.appState.dateRange} addStock={this.addStock} />
 				</div>
 			</div>
 		)
 	}
 }
 
-
-class Visualization extends Component {
-	render() {
-		return (
-			<div className="loader">
-				<div id="chart"></div>
-			</div>
-		)
-	}
-}
-
-class TimeScale extends Component {
-	render() {
-		return (
-			<div className="card-action right-align">
-				<button id="1-month" value="1" className="js-time-period light-blue-text">1M</button>
-				<button id="3-month" value="3" className="js-time-period light-blue-text">3M</button>
-				<button id="1-year" value="12" className="js-time-period active light-blue-text">1Y</button>
-				<button id="5-year" value="60" className="js-time-period light-blue-text">5Y</button>
-			</div>
-		)
-	}
-}
-
-class StockChart extends Component {
-	render() {
-		return (
-			<div className="row">
-				<div className="col s12 m12 l12">
-					<div className="card">
-						<div className="chart-wrapper card-content">
-							<TimeScale />
-							<Visualization />
-						</div>
-					</div>
-				</div>
-			</div>
-		)
-	}
-}
 
 class App extends Component {
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			stockData: [],
-			dateRange: 12,
-			selectedSymbol: ''
-		}
-		this.setParentState = this.setParentState.bind(this);
-	}
-
-	getSelectedSymbol() {
-		return this.state.selectedSymbol;
-	}
-
-	setParentState(obj) {
-		this.setState(obj);
-	}
-
-	changeDateRange(range) {
-		this.setState({ dateRange: range });
-	}
-
-	componentDidMount() {
-		axios.get(`/data/stocks`)
-			.then(d => {
-				const stockData = d.data.map(stock => stock);
-				this.setState({ stockData });
-			})
-	}
-
-	renderTickerList() {
-		return this.state.stockData.map(d => d);
-	}
-
 	render() {
+		const state = this.props.appState,
+			tickers = this.props.getTickers,
+			setAppState = this.props.setAppState.bind(this);
+
+		// console.log(tickers);
 		return (
-			<div className="App">
+			<div className="App" >
 				<div className="container">
-					<StockChart daterange={this.dateRange} />
-					<TickerColumn tickers={this.renderTickerList()} selectedSymbol={this.getSelectedSymbol()}
-						changeRange={this.changeRange} parentState={this.setParentState} />
+					<StockChart />
+					<TickerColumn
+						tickers={tickers}
+						appState={state}
+						setAppState={setAppState}
+					/>
 				</div>
 			</div>
 		);
 	}
 }
-
 export default App;
