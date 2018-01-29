@@ -6,6 +6,9 @@ function validate(symbol, tickers) {
 	const found = symbols.find(stock => stock === symbol);
 	const re = /^[A-Z]+$/;
 
+	// console.log('\n');
+	// console.log('Validate');
+	// console.log('Not found? ', !found);
 
 	if (!re.test(symbol)) {
 		console.warn('Symbol can only contain letters [a-z]');
@@ -15,12 +18,12 @@ function validate(symbol, tickers) {
 		return false;
 	}
 
-	if (found) {
-		console.warn(`Ticker ${symbol} was already added`);
-		return false;
-	} else {
+	if (!found) {
 		alert('A name was submitted: ' + symbol);
 		return true;
+	} else {
+		console.warn(`Ticker ${symbol} was already added`);
+		return false;
 	}
 }
 
@@ -30,15 +33,15 @@ function add(symbol, tickers, range) {
 		'symbol': symbol,
 		'range': range
 	}).then(res => {
-		const newArray = tickers;
-		tickers.splice(0, newArray.length);
+		const newArray = []
+		console.log(res.data.map(d => d[0].symbol));
 		res.data.map(d => newArray.push(d));
 		return newArray;
 	});
 }
 
 
-function remove(event, tickers, selectedSymbol, callback) {
+function remove(event, tickers, active, callback) {
 	const symbols = tickers.map(d => d[0].symbol);
 	const newState = tickers;
 	const symbol = event.target.id;
@@ -47,28 +50,31 @@ function remove(event, tickers, selectedSymbol, callback) {
 	if (index > -1) {
 		// reset state here
 		newState.splice(index, 1);
-		// console.log(tickers.map(d => d[0].symbol));
-		// console.log(newState.length);
+
+		// console.log('\n');
+		// console.log('remove');
+		// console.log(symbol, newState.map(d => d[0].symbol));
 
 		if (newState.length === 0) {
 			console.log('case 1');
 			callback(newState, '');
 
-		} else if (symbol === selectedSymbol) {
+		} else if (symbol === active) {
 			console.log('case 2');
+			// console.log(newState, newState[0][0].symbol);
+
 			chart.draw(newState, newState[0][0].symbol);
 			callback(newState, newState[0][0].symbol);
 
 		} else {
 			console.log('case 3');
+			console.log(newState[0][0].symbol, newState.map(d => d[0].symbol));			
 			chart.draw(newState, newState[0][0].symbol);
 			callback(newState, symbol);
 		}
 
 		axios.delete('data/remove', {
-			'symbol': symbol
-		}).catch(err => {
-			console.warn(err);
+			data: { 'symbol': symbol }
 		});
 	}
 }

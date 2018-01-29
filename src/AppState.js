@@ -12,11 +12,12 @@ class AppState extends Component {
 		this.state = {
 			stockData: [],
 			dateRange: 12,
-			selectedSymbol: '',
+			activeSymbol: '',
 			socket: socket
 		}
 		this.setAppState = this.setAppState.bind(this);
 		this.getTickerList = this.getTickerList.bind(this);
+		this.getActiveSymbol = this.getActiveSymbol.bind(this);
 	}
 
 	componentDidMount() {
@@ -31,10 +32,10 @@ class AppState extends Component {
 				const stockData = d.data.map(stock => stock);
 				this.setAppState({
 					'stockData': stockData,
-					'selectedSymbol': stockData[0][0].symbol
+					'activeSymbol': stockData[0][0].symbol
 				}, done => {
-					console.log(this.state.stockData);
-					console.log(this.state.selectedSymbol);
+					// console.log(this.state.stockData);
+					// console.log(this.state.activeSymbol);
 				});
 			})
 	}
@@ -44,7 +45,18 @@ class AppState extends Component {
 	}
 
 	setAppState(newState, callback) {
-		this.setState(newState, callback);
+		this.setState(newState, () => {
+			if (this.props.debug) {
+				console.log('setAppState', JSON.stringify(this.state));
+			}
+			if (callback) {
+				callback();
+			}
+		})
+	}
+
+	getActiveSymbol() {
+		return this.state.activeSymbol;
 	}
 
 	getTickerList() {
@@ -57,8 +69,9 @@ class AppState extends Component {
 				{React.Children.map(this.props.children, child => {
 					return React.cloneElement(child, {
 						appState: this.state,
-						setAppState: this.setState,
-						getTickers: this.getTickerList()
+						setAppState: this.setAppState,
+						getTickers: this.getTickerList(),
+						getActiveSymbol: this.getActiveSymbol()
 					})
 				})}
 			</div>

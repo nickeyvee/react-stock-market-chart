@@ -5,9 +5,11 @@
   "dependencies": {
     "axios": "^0.17.1",
     "c3": "^0.4.18",
+    "classnames": "^2.2.5",
     "d3": "^4.12.2",
     "jquery": "^3.3.1",
     "react": "^16.2.0",
+    "react-classnames": "^0.1.2",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.0",
     "socket.io-client": "^2.0.4"

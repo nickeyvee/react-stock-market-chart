@@ -7,7 +7,7 @@ body {
 	width: 85%;
 }
 
-.highlight {
+.active {
 	color: #0288d1 !important;
 }
 
@@ -37,9 +37,6 @@ body {
 	visibility: hidden;
 }
 
-.active {
-	border-bottom: 2px solid #03a9f4 !important;
-}
 
 .loader svg.lds-rolling {
 	position: absolute;
@@ -55,7 +52,7 @@ body {
 	/*opacity: 0.4;*/
 }
 
-.js-toggle-ticker {
+.toggle-ticker {
 	cursor: pointer;
 }
 
@@ -76,12 +73,17 @@ button.js-time-period {
 	width: 35px;
 }
 
-.js-toggle-ticker:focus {
+.toggle-ticker {
+	min-height: 80px !important;
+}
+
+.toggle-ticker:focus {
 	color: #0288d1 !important;
 	font-weight: 700;
 }
 
-.js-toggle-ticker .card-title {
+.toggle-ticker .card-title {
+	float: left;
 	font-weight: 500;
 	color: rgb(183, 196, 216);
 }
@@ -89,6 +91,11 @@ button.js-time-period {
 .card .card-action {
 	border-top: none !important;
 	border-bottom: 1px solid rgba(160, 160, 160, 0.2);
+}
+
+.fa.fa-times {
+	float: right;
+	color: #03a9f4;
 }
 
 div .card-content {
