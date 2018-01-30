@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import service from './data/api.js';
-import io from 'socket.io-client';
-import axios from 'axios';
+// import io from 'socket.io-client';
+// import axios from 'axios';
 import './App.css';
 
 import StockChart from './components/StockChart.js';
 import TickerColumn from './components/TickerColumn.js';
+
+import service from './data/api.js';
 
 class App extends Component {
 	render() {
@@ -14,7 +15,11 @@ class App extends Component {
 		return (
 			<div className="App" >
 				<div className="container">
-					<StockChart />
+					<StockChart 
+						dateRange={state.dateRange}
+						update={this.props.setAppState}
+						active={state.activeSymbol}
+					/>
 					<TickerColumn
 						tickers={tickers}
 						appState={state}

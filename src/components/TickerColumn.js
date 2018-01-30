@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import service from '../data/api.js';
+import Search from './Search.js';
 import '../App.css';
 
-import chart from '../chart/c3-chart.js';
-import Search from './Search.js';
+const chart = require('../chart/c3-chart.js');
+const service = require('../data/api.js');
 
 class TickerColumn extends Component {
 	constructor(props) {
@@ -27,6 +27,7 @@ class TickerColumn extends Component {
 	}
 
 	removeStock(event) {
+		console.log('removeStock()');
 		service.remove(event, this.props.tickers, this.props.active,
 			(newState, symbol) => {
 				this.props.update({ stockData: newState, activeSymbol: symbol });
@@ -34,6 +35,7 @@ class TickerColumn extends Component {
 	}
 
 	toggleStock(event) {
+		console.log('toggleStock()');
 
 		// toggleClick fires when the component is RERENDERED
 		const newSymbol = event.currentTarget.id;
@@ -47,18 +49,18 @@ class TickerColumn extends Component {
 	render() {
 		const tickerRows = this.props.tickers.map((data, index) =>
 
-			<div key={data[0].symbol} id={data[0].symbol} onClick={e => this.toggleStock(e)} className="col s12 m12 l4">
+			<div key={data[0].symbol} className="col s12 m12 l4">
 				<div className="card toggle-ticker">
 					<div className="card-content">
-						<span className={`card-title ${this.props.active === data[0].symbol ? 'active' : ''}`}>{data[0].symbol}</span>
-						<i className="fa fa-times" id={data[0].symbol} onClick={e => this.removeStock(e)}></i>
+						<span className={`card-title ${this.props.active === data[0].symbol ? 'active' : ''}`}
+							id={data[0].symbol} onClick={e => this.toggleStock(e)}>{data[0].symbol}</span>
+						<span className='remove' id={data[0].symbol} onClick={e => this.removeStock(e)}>
+							<i className="fa fa-times"></i>
+						</span>
 					</div>
 				</div>
 			</div>
 		);
-
-		// console.log('\n');
-		// console.log(tickerRows.map(item => item.key));
 
 		return (
 			<div className="tickers js-tickers row" >

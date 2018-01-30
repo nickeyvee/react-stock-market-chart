@@ -8,7 +8,12 @@ body {
 }
 
 .active {
-	color: #0288d1 !important;
+	color: #03a9f4 !important;
+}
+
+.active-timeperiod {
+	color: #03a9f4 !important;	
+	border-bottom: 2px solid #03a9f4 !important;
 }
 
 .underline {
@@ -64,8 +69,9 @@ body {
 	padding-bottom: 0 !important;
 }
 
-button.js-time-period {
+button.timeperiod {
 	background: white;
+	color: #03a9f4;
 	border: none;
 	display: inline-block;
 	padding-bottom: 17px;
@@ -86,6 +92,19 @@ button.js-time-period {
 	float: left;
 	font-weight: 500;
 	color: rgb(183, 196, 216);
+	padding: 24px;
+	width: 85%;
+}
+
+.toggle-ticker .card-content {
+	padding: 0 !important;
+}
+
+.toggle-ticker .card-content .remove {
+	float: right;
+	height: 80px;
+	padding: 24px;
+	width: 10%
 }
 
 .card .card-action {
@@ -94,8 +113,10 @@ button.js-time-period {
 }
 
 .fa.fa-times {
-	float: right;
+	width: 0;
+	height: 0;
 	color: #03a9f4;
+	z-index: -1;
 }
 
 div .card-content {

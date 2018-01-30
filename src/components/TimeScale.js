@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
 import '../App.css';
 
+const chart = require('../data/api');
+
 class TimeScale extends Component {
+	constructor(props) {
+		super(props);
+		this.toggleTimePeriod = this.toggleTimePeriod.bind(this);
+	}
+
+	toggleTimePeriod(event) {
+		this.props.update({ dateRange: event.currentTarget.value },
+			chart.timescale(this.props.active, event.currentTarget.value)
+		)
+	}
+
 	render() {
+		const options = [1, 3, 12, 60].map((val, i) =>
+			<button key={i.toString()} onClick={this.toggleTimePeriod} value={val}
+				className={`timeperiod ${val === parseInt(this.props.dateRange) ? 'active-timeperiod' : ''}`}>
+				{val < 12 ? val + 'M' : val / 12 + 'Y'}
+			</button>
+		);
+
 		return (
 			<div className="card-action right-align">
-				<button id="1-month" value="1" className="js-time-period light-blue-text">1M</button>
-				<button id="3-month" value="3" className="js-time-period light-blue-text">3M</button>
-				<button id="1-year" value="12" className="js-time-period active light-blue-text">1Y</button>
-				<button id="5-year" value="60" className="js-time-period light-blue-text">5Y</button>
+				{options}
 			</div>
 		)
 	}

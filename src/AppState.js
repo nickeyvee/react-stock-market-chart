@@ -32,7 +32,8 @@ class AppState extends Component {
 				const stockData = d.data.map(stock => stock);
 				this.setAppState({
 					'stockData': stockData,
-					'activeSymbol': stockData[0][0].symbol
+					'activeSymbol': stockData[0][0].symbol,
+					'dateRange': 12
 				}, done => {
 					// console.log(this.state.stockData);
 					// console.log(this.state.activeSymbol);

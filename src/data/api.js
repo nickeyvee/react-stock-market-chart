@@ -44,7 +44,7 @@ function add(symbol, tickers, range) {
 function remove(event, tickers, active, callback) {
 	const symbols = tickers.map(d => d[0].symbol);
 	const newState = tickers;
-	const symbol = event.target.id;
+	const symbol = event.currentTarget.id;
 	const index = symbols.indexOf(symbol);
 
 	if (index > -1) {
@@ -68,7 +68,7 @@ function remove(event, tickers, active, callback) {
 
 		} else {
 			console.log('case 3');
-			console.log(newState[0][0].symbol, newState.map(d => d[0].symbol));			
+			console.log(newState[0][0].symbol, newState.map(d => d[0].symbol));
 			chart.draw(newState, newState[0][0].symbol);
 			callback(newState, symbol);
 		}
@@ -79,7 +79,16 @@ function remove(event, tickers, active, callback) {
 	}
 }
 
+function timescale(symbol, range) {
+	axios.post('data/timescale', {
+		'symbol': symbol,
+		'range': range
+	}).then(res => {
+		chart.draw(res.data, symbol, range);
+	})
+}
+
 
 module.exports = {
-	add, remove, validate
+	add, remove, validate, timescale
 }
