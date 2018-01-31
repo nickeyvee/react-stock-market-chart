@@ -8,6 +8,10 @@ let chart;
 
 function plot(dates, prices, range) {
 
+	if(chart) {
+		chart.destroy();
+	}
+
 	const months = [
 		'Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 	];
@@ -20,9 +24,10 @@ function plot(dates, prices, range) {
 	// console.log(prices);
 
 	function date_format(date, range, count) {
-		if (range === 60) {
+
+		if (parseInt(range) === 60) {
 			return date.getFullYear();
-		} else if (range === 1) {
+		} else if (parseInt(range) === 1) {
 			return `${months[date.getMonth()]} ${date.getDate()}`;
 		} else {
 			return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;

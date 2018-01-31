@@ -37,6 +37,11 @@ class AppState extends Component {
 				}, done => {
 					// console.log(this.state.stockData);
 					// console.log(this.state.activeSymbol);
+					chart.draw(
+						this.state.stockData,
+						this.state.activeSymbol,
+						this.state.dateRange
+					)
 				});
 			})
 	}

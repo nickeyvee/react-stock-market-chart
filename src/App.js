@@ -23,6 +23,7 @@ class App extends Component {
 					<TickerColumn
 						tickers={tickers}
 						appState={state}
+						dateRange={state.dateRange}
 						update={this.props.setAppState}
 						active={state.activeSymbol}
 					/>

@@ -41,7 +41,7 @@ function add(symbol, tickers, range) {
 }
 
 
-function remove(event, tickers, active, callback) {
+function remove(event, tickers, active, range, callback) {
 	const symbols = tickers.map(d => d[0].symbol);
 	const newState = tickers;
 	const symbol = event.currentTarget.id;
@@ -63,13 +63,12 @@ function remove(event, tickers, active, callback) {
 			console.log('case 2');
 			// console.log(newState, newState[0][0].symbol);
 
-			chart.draw(newState, newState[0][0].symbol);
+			chart.draw(newState, newState[0][0].symbol, range);
 			callback(newState, newState[0][0].symbol);
 
 		} else {
 			console.log('case 3');
-			console.log(newState[0][0].symbol, newState.map(d => d[0].symbol));
-			chart.draw(newState, newState[0][0].symbol);
+			chart.draw(newState, newState[0][0].symbol, range);
 			callback(newState, symbol);
 		}
 

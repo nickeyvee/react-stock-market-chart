@@ -18,9 +18,9 @@ class TickerColumn extends Component {
 		const valid = service.validate(symbol, this.props.tickers);
 
 		if (valid) {
-			service.add(symbol, this.props.tickers, this.props.appState.dateRange)
+			service.add(symbol, this.props.tickers, this.props.dateRange)
 				.then(data => {
-					chart.draw(data, symbol);
+					chart.draw(data, symbol, this.props.dateRange);
 					this.props.update({ stockData: data, activeSymbol: symbol });
 				})
 		}
@@ -28,7 +28,10 @@ class TickerColumn extends Component {
 
 	removeStock(event) {
 		console.log('removeStock()');
-		service.remove(event, this.props.tickers, this.props.active,
+		service.remove(event,
+			this.props.tickers,
+			this.props.active,
+			this.props.dateRange,
 			(newState, symbol) => {
 				this.props.update({ stockData: newState, activeSymbol: symbol });
 			})
@@ -41,7 +44,7 @@ class TickerColumn extends Component {
 		const newSymbol = event.currentTarget.id;
 
 		if (newSymbol !== this.props.active) {
-			chart.draw(this.props.tickers, newSymbol);
+			chart.draw(this.props.tickers, newSymbol, this.props.dateRange);
 			this.props.update({ activeSymbol: newSymbol });
 		}
 	}
