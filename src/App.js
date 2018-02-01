@@ -6,8 +6,6 @@ import './App.css';
 import StockChart from './components/StockChart.js';
 import TickerColumn from './components/TickerColumn.js';
 
-import service from './data/api.js';
-
 class App extends Component {
 	render() {
 		const state = this.props.appState;

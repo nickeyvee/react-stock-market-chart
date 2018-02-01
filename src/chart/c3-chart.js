@@ -8,6 +8,8 @@ let chart;
 
 function plot(dates, prices, range) {
 
+	let culling = 6;
+
 	if(chart) {
 		chart.destroy();
 	}
@@ -24,10 +26,12 @@ function plot(dates, prices, range) {
 	// console.log(prices);
 
 	function date_format(date, range, count) {
+		range = parseInt(range, 10);
 
-		if (parseInt(range) === 60) {
+		if (range === 60) {
+			culling = 5;
 			return date.getFullYear();
-		} else if (parseInt(range) === 1) {
+		} else if (range === 1) {
 			return `${months[date.getMonth()]} ${date.getDate()}`;
 		} else {
 			return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
@@ -51,7 +55,7 @@ function plot(dates, prices, range) {
 				tick: {
 					format: d => date_format(new Date(d), range),
 					count: 6,
-					culling: 6,
+					culling: culling,
 				},
 				show: true
 			},

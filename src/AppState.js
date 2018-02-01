@@ -4,6 +4,7 @@ import axios from 'axios';
 import './App.css';
 
 import chart from './chart/c3-chart.js';
+import service from './data/api';
 
 class AppState extends Component {
 	constructor(props) {
@@ -11,7 +12,7 @@ class AppState extends Component {
 		const socket = io.connect('http://localhost:5000');
 		this.state = {
 			stockData: [],
-			dateRange: 12,
+			dateRange: 0,
 			activeSymbol: '',
 			socket: socket
 		}
@@ -30,13 +31,22 @@ class AppState extends Component {
 		axios.get(`/data/stocks`)
 			.then(d => {
 				const stockData = d.data.map(stock => stock);
+				const activeSymbol = !stockData.length ? '' : stockData[0][0].symbol;
+
+				const diff = service.monthDiff(stockData[0][0].date, stockData[0][stockData[0].length - 1].date);
+				const dateRange = service.deduceDateRange(diff);
+
 				this.setAppState({
 					'stockData': stockData,
-					'activeSymbol': stockData[0][0].symbol,
-					'dateRange': 12
+					'activeSymbol': activeSymbol,
+					'dateRange': dateRange
 				}, done => {
 					// console.log(this.state.stockData);
 					// console.log(this.state.activeSymbol);
+					if (stockData.length === 0) {
+						return;
+					}
+
 					chart.draw(
 						this.state.stockData,
 						this.state.activeSymbol,
@@ -44,10 +54,6 @@ class AppState extends Component {
 					)
 				});
 			})
-	}
-
-	componentWillMount() {
-		this.setAppState({})
 	}
 
 	setAppState(newState, callback) {

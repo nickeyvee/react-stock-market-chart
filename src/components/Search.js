@@ -8,6 +8,13 @@ class Search extends Component {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.addStockEvent = this.addStockEvent.bind(this);
+		this.onKeyPressEvent = this.onKeyPressEvent.bind(this);
+	}
+
+	onKeyPressEvent(event) {
+		if (event.key === 'Enter') {
+			this.props.addStock(this.state.value);
+		}
 	}
 
 	addStockEvent() {
@@ -23,11 +30,17 @@ class Search extends Component {
 			<div id="search_bar" className="card">
 				<div className="card-content" style={{ 'paddingBottom': '0' }}>
 					<p>Enter a ticker</p>
-					<input id="ticker_symbol" type="text" value={this.state.value}
-						onChange={this.handleChange} placeholder="AAPL" maxLength="5"></input>
+					<input id="ticker_symbol"
+						type="text" value={this.state.value}
+						onKeyPress={this.onKeyPressEvent}
+						onChange={this.handleChange}
+						disabled={this.props.isDisabled}
+						placeholder="AAPL"
+						maxLength="5"></input>
 				</div>
 				<div className="card-action">
-					<button className="add-stock" onClick={this.addStockEvent}>Add</button>
+					<button className="add-stock" onClick={this.addStockEvent}
+						disabled={this.props.isDisabled}>Add</button>
 				</div>
 			</div>
 		)

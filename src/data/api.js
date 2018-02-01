@@ -1,5 +1,7 @@
 const axios = require('axios');
 const chart = require('../chart/c3-chart.js');
+const Materialize = require('materialize-css');
+const moment = require('moment');
 
 function validate(symbol, tickers) {
 	const symbols = tickers.map(d => d[0].symbol);
@@ -11,18 +13,18 @@ function validate(symbol, tickers) {
 	// console.log('Not found? ', !found);
 
 	if (!re.test(symbol)) {
-		console.warn('Symbol can only contain letters [a-z]');
+		Materialize.toast('Symbol can only contain letters [a-z]', 3000);
 		return false;
 	} else if (symbol.length > 5) {
-		console.warn('Valid symbols can be no longer than 5 characters in length');
+		Materialize.toast('Valid symbols can be no longer than 5 characters in length');
 		return false;
 	}
 
 	if (!found) {
-		alert('A name was submitted: ' + symbol);
+		console.warn('A ticker was submitted : ' + symbol, 3000);
 		return true;
 	} else {
-		console.warn(`Ticker ${symbol} was already added`);
+		Materialize.toast(`Ticker ${symbol} was already added`, 3000);
 		return false;
 	}
 }
@@ -47,6 +49,9 @@ function remove(event, tickers, active, range, callback) {
 	const symbol = event.currentTarget.id;
 	const index = symbols.indexOf(symbol);
 
+	console.log(typeof range);
+
+
 	if (index > -1) {
 		// reset state here
 		newState.splice(index, 1);
@@ -57,6 +62,7 @@ function remove(event, tickers, active, range, callback) {
 
 		if (newState.length === 0) {
 			console.log('case 1');
+			chart.erase();
 			callback(newState, '');
 
 		} else if (symbol === active) {
@@ -69,7 +75,7 @@ function remove(event, tickers, active, range, callback) {
 		} else {
 			console.log('case 3');
 			chart.draw(newState, newState[0][0].symbol, range);
-			callback(newState, symbol);
+			callback(newState, newState[0][0].symbol);
 		}
 
 		axios.delete('data/remove', {
@@ -79,15 +85,42 @@ function remove(event, tickers, active, range, callback) {
 }
 
 function timescale(symbol, range) {
-	axios.post('data/timescale', {
+
+	return axios.post('data/timescale', {
 		'symbol': symbol,
 		'range': range
 	}).then(res => {
 		chart.draw(res.data, symbol, range);
+		return {
+			'data': res.data,
+			'range': range
+		}
 	})
+}
+
+function monthDiff(d1, d2) {
+	const a = moment(d1);
+	const b = moment(d2);
+
+	// console.log(a.diff(b, 'months'));
+	return a.diff(b, 'months');
+}
+
+function deduceDateRange(diff) {
+	if (diff === 0 || diff === 1) {
+		return 1;
+	} else if (1 < diff && diff <= 3) {
+		return 3;
+	} else if (3 < diff && diff <= 12) {
+		return 12;
+	} else if (12 < diff && diff <= 60) {
+		return 60;
+	} else {
+		return 12;
+	}
 }
 
 
 module.exports = {
-	add, remove, validate, timescale
+	add, remove, validate, timescale, monthDiff, deduceDateRange
 }

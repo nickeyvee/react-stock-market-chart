@@ -18,7 +18,9 @@ function prices(data, symbol) {
 	// console.log(data[0]);
 	// console.log('symbol : ' + symbol + '\n');
 
-	const prices = data.map((d, i) => d.close.toFixed(2));
+	const prices = data.map((d, i) => {
+		return d.close.toFixed(2);
+	});
 	prices.unshift(symbol);
 	return prices;
 }
