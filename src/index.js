@@ -11,4 +11,4 @@ ReactDOM.render(
 	</AppState>, 
 	document.getElementById('root')
 );
-registerServiceWorker();
+// registerServiceWorker();
