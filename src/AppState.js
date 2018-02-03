@@ -42,7 +42,7 @@ class AppState extends Component {
 					dateRange = service.deduceDateRange(diff);
 				}
 
-				console.log(stockData.length, activeSymbol, dateRange);
+				// console.log(stockData.length, activeSymbol, dateRange);
 
 				this.setAppState({
 					'stockData': stockData,

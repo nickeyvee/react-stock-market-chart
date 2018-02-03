@@ -84,8 +84,6 @@ class TickerColumn extends Component {
 			this.props.update({ stockData: event.data, dateRange: event.range });
 		})
 
-		console.log(this.props.tickers.map((data, index) => data[0]));
-
 		const tickerRows = this.props.tickers.map((data, index) =>
 			<div key={data[0].symbol} className="col s12 m12 l4">
 				<div className="card toggle-ticker">
