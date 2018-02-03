@@ -6,6 +6,7 @@ function findStock(data, symbol) {
 
 function dates(data) {
 	const dates = data.map(d => new Date(d.date));
+
 	dates.unshift('x');
 	return dates;
 }

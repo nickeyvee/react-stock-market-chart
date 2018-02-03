@@ -4,7 +4,7 @@ import '../App.css';
 class Visualization extends Component {
 	render() {
 		return (
-			<div className="loader">
+			<div className={this.props.loading ? "loading" : "" }>
 				<div id="chart"></div>
 			</div>
 		)

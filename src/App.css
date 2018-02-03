@@ -120,6 +120,7 @@ button.timeperiod {
 .fa.fa-times {
 	width: 0;
 	height: 0;
+	padding-top: 8px;
 	color: #03a9f4;
 	z-index: -1;
 }

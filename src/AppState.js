@@ -4,7 +4,7 @@ import axios from 'axios';
 import './App.css';
 
 import chart from './chart/c3-chart.js';
-import service from './data/api';
+import service from './services/dataService.js';
 
 class AppState extends Component {
 	constructor(props) {
@@ -14,11 +14,14 @@ class AppState extends Component {
 			stockData: [],
 			dateRange: 0,
 			activeSymbol: '',
-			socket: socket
+			socket: socket,
+			loading: false
 		}
 		this.setAppState = this.setAppState.bind(this);
 		this.getTickerList = this.getTickerList.bind(this);
 		this.getActiveSymbol = this.getActiveSymbol.bind(this);
+		this.newSocketEvent = this.newSocketEvent.bind(this);
+		this.loadingStatus = this.loadingStatus.bind(this);
 	}
 
 	componentDidMount() {
@@ -31,10 +34,15 @@ class AppState extends Component {
 		axios.get(`/data/stocks`)
 			.then(d => {
 				const stockData = d.data.map(stock => stock);
-				const activeSymbol = !stockData.length ? '' : stockData[0][0].symbol;
+				const activeSymbol = !stockData.length ? null : stockData[0][0].symbol;
+				let dateRange = 12;
 
-				const diff = service.monthDiff(stockData[0][0].date, stockData[0][stockData[0].length - 1].date);
-				const dateRange = service.deduceDateRange(diff);
+				if (activeSymbol) {
+					const diff = service.monthDiff(stockData[0][0].date, stockData[0][stockData[0].length - 1].date);
+					dateRange = service.deduceDateRange(diff);
+				}
+
+				console.log(stockData.length, activeSymbol, dateRange);
 
 				this.setAppState({
 					'stockData': stockData,
@@ -67,12 +75,20 @@ class AppState extends Component {
 		})
 	}
 
+	newSocketEvent(event) {
+		return this.state.socket.emit(event.name, event.data);
+	}
+
 	getActiveSymbol() {
 		return this.state.activeSymbol;
 	}
 
 	getTickerList() {
 		return this.state.stockData.map(d => d);
+	}
+
+	loadingStatus(bool) {
+		this.setState({ loading: bool });
 	}
 
 	render() {
@@ -83,7 +99,8 @@ class AppState extends Component {
 						appState: this.state,
 						setAppState: this.setAppState,
 						getTickers: this.getTickerList(),
-						getActiveSymbol: this.getActiveSymbol()
+						getActiveSymbol: this.getActiveSymbol(),
+						isLoading: this.loadingStatus
 					})
 				})}
 			</div>

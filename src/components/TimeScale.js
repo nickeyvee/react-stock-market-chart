@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 
-const service = require('../data/api');
+const service = require('../services/dataService.js');
 
 class TimeScale extends Component {
 	constructor(props) {
@@ -12,9 +12,19 @@ class TimeScale extends Component {
 	toggleTimePeriod(event) {
 		const newRange = event.currentTarget.value;
 
+		// UPDATE UI FIRST
+		this.props.update({ dateRange: parseInt(newRange, 10) });
+		this.props.isLoading(true);
+
 		service.timescale(this.props.active, newRange)
 			.then(res => {
-				this.props.update({ stockData: res.data, dateRange: parseInt(res.range, 10)})
+				console.log(res);
+				this.props.socket.emit('timescale', {
+					'data': res.data,
+					'range': parseInt(res.range, 10)
+				});
+				this.props.update({ stockData: res.data })
+				this.props.isLoading(false);
 			})
 	}
 

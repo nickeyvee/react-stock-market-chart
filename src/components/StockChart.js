@@ -13,12 +13,18 @@ class StockChart extends Component {
 				<div className="col s12 m12 l12">
 					<div className="card">
 						<div className="chart-wrapper card-content">
-							<TimeScale 
+							<TimeScale
 								update={update}
 								dateRange={dateRange}
 								active={active}
+								socket={this.props.socket}
+								isLoading={this.props.isLoading}
+								loading={this.props.appState.loading}													
 							/>
-							<Visualization />
+							<Visualization 
+								isLoading={this.props.isLoading}
+								loading={this.props.appState.loading}
+							/>
 						</div>
 					</div>
 				</div>
