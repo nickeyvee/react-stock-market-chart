@@ -9,7 +9,7 @@ import service from './services/dataService.js';
 class AppState extends Component {
 	constructor(props) {
 		super(props);
-		const socket = io.connect('http://localhost:5000');
+		const socket = io.connect(process.env.REACT_APP_DOMAIN);
 		this.state = {
 			stockData: [],
 			dateRange: 0,
