@@ -69,7 +69,11 @@ function getOneStockBySymbol(symbol, range, period) {
 		to: today_formatted,
 		period: period,  // period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only)
 	}).then(data => {
-		return checkNullValues(data);
+      if(data.length) {
+         return checkNullValues(data);
+      } else {
+         return false
+      }
 	})
 }
 

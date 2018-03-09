@@ -23,9 +23,12 @@ router.post('/add', function (req, res, next) {
 
 	yahoo.getOneStockBySymbol(symbol, range)
 		.then(data => {
-			yahoo.storeStocksLocally(data);
-
-			res.json(yahoo.localData);
+         if(data) {
+            yahoo.storeStocksLocally(data);
+            res.json(yahoo.localData);
+         } else {
+            res.status(404).send();
+         }
 		})
 });
 

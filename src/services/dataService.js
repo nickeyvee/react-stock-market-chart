@@ -39,7 +39,9 @@ function add(symbol, tickers, range) {
 		// console.log(res.data.map(d => d[0].symbol));
 		res.data.map(d => newArray.push(d));
 		return newArray;
-	});
+	}).catch(err => {
+      throw new Error('Symbol not found');
+   })
 }
 
 
