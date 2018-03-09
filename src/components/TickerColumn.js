@@ -87,13 +87,15 @@ class TickerColumn extends Component {
 		const tickerRows = this.props.tickers.map((data, index) =>
 			<div key={data[0].symbol} className="col s12 m12 l4">
 				<div className="card toggle-ticker">
-					<div className="card-content">
-						<span className={`card-title ${this.props.active === data[0].symbol ? 'active' : ''}`}
-							id={data[0].symbol} onClick={e => this.toggleStock(e)}>{data[0].symbol}</span>
-						<span className='remove' id={data[0].symbol} onClick={e => this.removeStock(e)}>
-							<i className="fa fa-times"></i>
-						</span>
-					</div>
+               <div className="card-content">
+                  <div className="row">
+                     <div className={`card-title col s8 ${this.props.active === data[0].symbol ? 'active' : ''}`}
+                        id={data[0].symbol} onClick={e => this.toggleStock(e)}>{data[0].symbol}</div>
+                     <div className="remove col s2 pull-s1" id={data[0].symbol} onClick={e => this.removeStock(e)}>
+                        <i className="fa fa-times"></i>
+                     </div>
+                  </div>
+               </div>
 				</div>
 			</div>
 		);

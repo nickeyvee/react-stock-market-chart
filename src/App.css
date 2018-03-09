@@ -5,7 +5,7 @@ body {
 
 .container {
 	margin-top: 15px;
-	width: 85%;
+	/* width: 85%; */
 }
 
 div.toast {
@@ -62,10 +62,6 @@ div.toast {
 	/*opacity: 0.4;*/
 }
 
-.toggle-ticker {
-	cursor: pointer;
-}
-
 .chart-wrapper.card-content {
 	min-height: 420.667px;
 }
@@ -85,7 +81,9 @@ button.timeperiod {
 }
 
 .toggle-ticker {
-	min-height: 80px !important;
+   cursor: pointer;
+   min-height: 80px !important;
+   min-width: 250px;
 }
 
 .toggle-ticker:focus {
