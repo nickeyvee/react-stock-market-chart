@@ -11,7 +11,7 @@ class StockChart extends Component {
 		return (
 			<div className="row">
 				<div className="col s12 m12 l12">
-					<div className="card">
+					<div id="stockchart_card" className="card">
 						<div className="chart-wrapper card-content">
 							<TimeScale
 								update={update}
