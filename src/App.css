@@ -10,9 +10,9 @@
       background: white !important;
    }
 
-   #toast-container {
+   /* #toast-container {
       top: 0 !important;
-   }
+   } */
 
    .mobile-search {
       cursor: pointer;
@@ -242,7 +242,7 @@ div .card-content {
    position: absolute;
    margin-top: 42px;
    opacity: 0.9;
-   z-index: 99;
+   z-index: 10001;
    width: 100%;
    left: 0;
    top: 0;
