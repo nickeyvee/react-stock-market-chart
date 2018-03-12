@@ -5,7 +5,6 @@ class Search extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { value: '' };
-
 		this.handleChange = this.handleChange.bind(this);
 		this.addStockEvent = this.addStockEvent.bind(this);
 		this.onKeyPressEvent = this.onKeyPressEvent.bind(this);
@@ -13,11 +12,13 @@ class Search extends Component {
 
 	onKeyPressEvent(event) {
 		if (event.key === 'Enter') {
+         // console.log(this.state.value);
 			this.props.addStock(this.state.value);
 		}
 	}
 
 	addStockEvent() {
+      console.log(this.props.addNewStock);
 		this.props.addStock(this.state.value);
 	}
 

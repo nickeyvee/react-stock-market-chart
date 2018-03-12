@@ -1,19 +1,61 @@
+@media (min-width: 450px) {
+   .mobile-search {
+      display: none;
+   }
+}
+
 @media (max-width: 450px) {
+
+   html {
+      background: white !important;
+   }
+
+   #toast-container {
+      top: 0 !important;
+   }
+
+   .mobile-search {
+      cursor: pointer;
+      display: block;
+      width: 40px;
+   }
+
+   .mobile-search .fa.fa-search {
+      font-size: 20px;
+      padding-left: 10px;
+   }
+
    #stockchart_card {
       border-radius: 0 !important;
       position: absolute;
       margin-top: -20px;
+      box-shadow: none;
       width: 100%;
       left: 0;
       top: 0;
    }
 
+   #stockchart_card .chart-wrapper {
+      padding: 0;
+   }
+
+   #stockchart_card .chart-wrapper .card-action {
+      display: flex;
+      padding-top: 20px;
+   }
+
    div.tickers.js-tickers.row {
       margin: auto;
       position: absolute;
-      top: 430px;
+      top: 380px;
       left: 0;
    }
+}
+
+html {
+   background: #01579b;
+   padding: 0;
+   margin: 0;
 }
 
 body {
@@ -35,7 +77,7 @@ div.toast {
 }
 
 .active-timeperiod {
-	color: #03a9f4 !important;	
+	color: #03a9f4 !important;
 	border-bottom: 2px solid #03a9f4 !important;
 }
 
@@ -49,7 +91,7 @@ div.toast {
 	background: #0288d1;
 }
 
-.topbar { 
+.topbar {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -57,12 +99,14 @@ div.toast {
 	width: 100%;
 	background: #FFA948;
 	padding: 3px 0;
-	text-align: center; 
+	text-align: center;
 	color: white;
 }
 
 .hidden {
-	visibility: hidden;
+   visibility: hidden;
+   display: none;
+   opacity: 0;
 }
 
 
@@ -76,16 +120,16 @@ div.toast {
 	opacity: 0.4;
 }
 
-#chart svg {
-	/*opacity: 0.4;*/
-}
-
 .chart-wrapper.card-content {
 	min-height: 420.667px;
 }
 
 .chart-wrapper .card-action {
 	padding-bottom: 0 !important;
+}
+
+#stockchart_card .chart-wrapper .card-action {
+   justify-content: space-between;
 }
 
 button.timeperiod {
@@ -96,6 +140,12 @@ button.timeperiod {
 	padding-bottom: 17px;
 	margin-right: 8px;
 	width: 35px;
+}
+
+.timescale-options {
+   display: flex;
+   margin-left: auto;
+   width: 180px;
 }
 
 .toggle-ticker {
@@ -154,12 +204,12 @@ div .card-content {
 }
 
 #search_bar .card-action {
-	padding-bottom: 25px;
+	padding-bottom: 25px !important;
 }
 
 .card-action button.add-stock {
 	background: white;
-	transition: 0.4s !important;	
+	transition: 0.4s !important;
 	color: #81d4fa !important;
 	font-weight: 600;
 	padding: 8px 17px;
@@ -171,5 +221,30 @@ div .card-content {
 	transition: 0.4s !important;
 	color: #0288d1 !important;
 	border: 2px solid #0288d1;
+}
+
+.mobile-clickarea {
+   position: absolute;
+   cursor: pointer;
+   opacity: 0.5;
+   transition: 0.5s;
+   background: black;
+   z-index: 89;
+   padding: 0;
+   margin: 0;
+   height: 2500px;
+   width: 100%;
+   left: 0;
+   top: 0;
+}
+
+.positioned-mobile-search {
+   position: absolute;
+   margin-top: 42px;
+   opacity: 0.9;
+   z-index: 99;
+   width: 100%;
+   left: 0;
+   top: 0;
 }
 

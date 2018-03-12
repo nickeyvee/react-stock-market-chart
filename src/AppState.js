@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import axios from 'axios';
 import './App.css';
 
@@ -9,18 +9,18 @@ import service from './services/dataService.js';
 class AppState extends Component {
    constructor(props) {
       super(props);
-      const socket = io.connect(process.env.REACT_APP_DOMAIN);
+      // const socket = io.connect(process.env.REACT_APP_DOMAIN);
       this.state = {
          stockData: [],
          dateRange: 0,
          activeSymbol: '',
-         socket: socket,
+         // socket: socket,
          loading: false
       }
       this.setAppState = this.setAppState.bind(this);
       this.getTickerList = this.getTickerList.bind(this);
       this.getActiveSymbol = this.getActiveSymbol.bind(this);
-      this.newSocketEvent = this.newSocketEvent.bind(this);
+      // this.newSocketEvent = this.newSocketEvent.bind(this);
       this.loadingStatus = this.loadingStatus.bind(this);
       this.updateWindowWidth = this.updateWindowWidth.bind(this);
    }
@@ -28,9 +28,9 @@ class AppState extends Component {
    componentDidMount() {
 
       // initalize websocket
-      this.state.socket.on('connect', () => {
-         return console.warn('socket working! id: ' + this.state.socket.id);
-      })
+      // this.state.socket.on('connect', () => {
+      //    return console.warn('socket working! id: ' + this.state.socket.id);
+      // })
 
       // get stock data into our app
       axios.get(`/data/stocks`)
@@ -94,7 +94,7 @@ class AppState extends Component {
    }
 
    newSocketEvent(event) {
-      return this.state.socket.emit(event.name, event.data);
+      // return this.state.socket.emit(event.name, event.data);
    }
 
    getActiveSymbol() {
@@ -115,8 +115,8 @@ class AppState extends Component {
             {React.Children.map(this.props.children, child => {
                return React.cloneElement(child, {
                   appState: this.state,
-                  setAppState: this.setAppState,
-                  getTickers: this.getTickerList(),
+                  update: this.setAppState,
+                  tickers: this.getTickerList(),
                   getActiveSymbol: this.getActiveSymbol(),
                   isLoading: this.loadingStatus
                })

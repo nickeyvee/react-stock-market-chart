@@ -7,7 +7,7 @@ var app = require('../app');
 var debug = require('debug')('nodejs-ssl:server');
 var http = require('http');
 var yahoo = require('../services/finance.js');
-var socket = require('socket.io');
+// var socket = require('socket.io');
 
 /**
  * Get port from environment and store in Express.
@@ -39,32 +39,32 @@ server.on('listening', onListening);
  * Socket setup.
  */
 
-var io = socket(server);
+// var io = socket(server);
 
-io.on('connection', function (socket) {
-	console.log('client made connection : ', socket.id);
+// io.on('connection', function (socket) {
+// 	console.log('client made connection : ', socket.id);
 
-	// create
-	socket.on('add', data => {
-		socket.broadcast.emit('add', data);
-	})
+// 	// create
+// 	socket.on('add', data => {
+// 		socket.broadcast.emit('add', data);
+// 	})
 
-	// update
-	socket.on('timescale', data => {
-		socket.broadcast.emit('timescale', data);
-	})
+// 	// update
+// 	socket.on('timescale', data => {
+// 		socket.broadcast.emit('timescale', data);
+// 	})
 
-	// delete
-	socket.on('delete', data => {
-		socket.broadcast.emit('delete', data);
-	})
+// 	// delete
+// 	socket.on('delete', data => {
+// 		socket.broadcast.emit('delete', data);
+// 	})
 
-	// toggle
-	socket.on('toggle', data => {
-		socket.broadcast.emit('toggle', data);
-	})
+// 	// toggle
+// 	socket.on('toggle', data => {
+// 		socket.broadcast.emit('toggle', data);
+// 	})
 
-});
+// });
 
 /**
  * Normalize a port into a number, string, or false.

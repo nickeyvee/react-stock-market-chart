@@ -8,7 +8,7 @@ let chart;
 
 function plot(dates, prices, range) {
 
-   let culling = 6, ticksForDesktop = false;
+   let culling = 6, tick_toggle = false, padding_dimensions = { left: -20, right: -20 };
 
    if (chart) {
       chart.destroy();
@@ -25,7 +25,12 @@ function plot(dates, prices, range) {
    // console.log('Prices : ');
    // console.log(prices);
 
-   if (window.innerWidth > 600) ticksForDesktop = true;
+   if (window.innerWidth > 600) {
+      tick_toggle = true;
+      padding_dimensions = {
+         right: 17
+      };
+   }
 
    function date_format(date, range, count) {
       range = parseInt(range, 10);
@@ -41,9 +46,7 @@ function plot(dates, prices, range) {
    }
 
    chart = c3.generate({
-      padding: {
-         right: 17
-      },
+      padding: padding_dimensions,
       data: {
          x: 'x',
          columns: [dates, prices],
@@ -59,14 +62,14 @@ function plot(dates, prices, range) {
                count: 6,
                culling: culling,
             },
-            show: ticksForDesktop
+            show: tick_toggle
          },
          y: {
             tick: {
                format: d3.format("$,")
             },
             min: Math.min.apply(Math, prices.slice(1, prices.length)),
-            show: ticksForDesktop
+            show: tick_toggle
          }
       },
       point: {
