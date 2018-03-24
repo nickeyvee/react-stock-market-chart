@@ -4,15 +4,88 @@
    }
 }
 
-@media (max-width: 450px) {
-
-   html {
-      background: white !important;
+@media (min-width: 850px) {
+   .flex-container {
+      width: 85%;
+      margin-top: 25px;
+   }
+   #stock_ticker_browser {
+      width: 32%;
+   }
+   #stats_card {
+      margin: 20px 0 20px 20px;
+      width: 65%;
    }
 
-   /* #toast-container {
-      top: 0 !important;
-   } */
+   #stats_card .stats-summary {
+      margin-left: 20px;
+      width: 100%;
+   }
+
+   #stats_card .stats-summary p {
+      font-size: 12px;
+      line-height: 2.2;
+   }
+
+   #stats_card .stats-quant {
+      width: 100%;
+   }
+}
+
+@media (max-width: 850px) {
+   #stock_ticker_browser {
+      width: 45%;
+   }
+   #stats_card {
+      flex-wrap: wrap-reverse;
+   }
+}
+
+@media (min-width: 600px) and (max-width: 849px) {
+
+   #stock_ticker_browser {
+      width: 49%;
+   }
+
+   #stats_card {
+      width: 49%;
+   }
+
+   #stats_card .stats-summary {
+      margin-top: 10px;
+      margin-left: 20px;
+      width: 100%;
+   }
+
+   #stats_card .stats-quant {
+      margin-left: 20px;
+      width: 100%;
+   }
+
+   #stockchart_card {
+     min-width: 600px;
+   }
+
+   .flex-container {
+      margin-top: 18px;
+      width: 85%;
+   }
+}
+
+@media (max-width: 600px) {
+
+   .flex-container {
+      flex-wrap: wrap-reverse;
+   }
+
+   html {
+      background: #E6ECF0 !important;
+   }
+
+   .flex-container {
+      width: 100%;
+      margin: 0;
+   }
 
    .mobile-search {
       cursor: pointer;
@@ -26,55 +99,128 @@
    }
 
    #stockchart_card {
-      border-radius: 0 !important;
-      position: absolute;
-      margin-top: -20px;
       box-shadow: none;
+   }
+
+   #stock_ticker_browser {
       width: 100%;
-      left: 0;
-      top: 0;
    }
 
-   #stockchart_card .chart-wrapper {
-      padding: 0;
+   #stats_card {
+      margin: 20px;
+      flex-wrap: wrap-reverse;
+      width: 100%;
    }
 
-   #stockchart_card .chart-wrapper .card-action {
-      display: flex;
-      padding-top: 20px;
+   #stats_card .stats-quant {
+      margin-top: 20px;      
+      width: 100%;
    }
 
-   div.tickers.js-tickers.row {
-      margin: auto;
-      position: absolute;
-      top: 380px;
-      left: 0;
+   .stats-summary {
+      display: block;
+      margin-top: 20px;      
+      width: 100%;
    }
 }
 
+.negative {
+   font-weight: 500 !important;
+   color: #F44336 !important;
+}
+
 html {
-   background: #01579b;
+   background: #F5F7FA;
+   height: 100%;
    padding: 0;
    margin: 0;
 }
 
-body {
-  /* padding: 50px; */
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+div.background {
+   display: block;
+   height: 225px;
+   width: 100%;
+   /* box-shadow: 0 4px 2px -2px gray; */
+   background: #01579b;
+   position: relative;
+   z-index: -1;
 }
 
-.container {
-	margin-top: 15px;
-	/* width: 85%; */
+body {
+  /* padding: 50px; */
+  height: 100%;
+  font: 14px 'Open Sans', Helvetica, Arial, sans-serif;
+}
+
+div#root {
+   position: absolute;
+   top: 0;  
+}
+
+div#root, div.App {
+   width: 100%;
+   height: 100%;
+}
+
+.flex-container {
+   display: flex;
+   flex-wrap: wrap;
+   padding: 0;
+   height: 100%;
+   margin-bottom: 18px;   
+   margin-left: auto;
+   margin-right: auto;
 }
 
 div.toast {
+   z-index: 10002;
 	background: #FFA948;
 }
 
+div#price_label {
+   font-family: 'Open Sans';
+   font-weight: 300;
+   color: rgb(70, 76, 85);
+   text-align: center;
+   height: 100px;
+   display: block;
+   margin: auto;
+}
+
+div#price_label .name {
+   margin-top: 20px;
+   margin-bottom: 0px;
+}
+
+div#price_label .price {
+   font-size: 50px;
+   margin: 0;
+}
+
+div#price_label .change {
+   font-size: 15px;
+   margin: 0;
+}
+
+.title {
+   font-weight: 500;
+   font-size: 25px;
+}
+
+.subtitle {
+   font-size: 15px;   
+   color: rgb(183, 196, 216);
+}
+
 .active {
+   /* background: white !important; */
+   background: rgb(232, 240, 245) !important;
 	color: #03a9f4 !important;
 }
+
+.fontAwesome {
+   font-family: 'Helvetica', FontAwesome, sans-serif;
+ }
 
 .active-timeperiod {
 	color: #03a9f4 !important;
@@ -105,6 +251,7 @@ div.toast {
 
 .hidden {
    visibility: hidden;
+   transition: visibility 0s, opacity 0.5s linear;
    display: none;
    opacity: 0;
 }
@@ -120,12 +267,22 @@ div.toast {
 	opacity: 0.4;
 }
 
-.chart-wrapper.card-content {
-	min-height: 420.667px;
+.chart-wrapper .card-action {
+   display: flex;
+	padding-bottom: 0 !important;
 }
 
-.chart-wrapper .card-action {
-	padding-bottom: 0 !important;
+.custom-card {
+   padding: 20px;
+   padding-bottom: 0 !important;
+   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14);
+   border-bottom: 1px solid rgba(160, 160, 160, 0.2); 
+}
+
+#stockchart_card {
+   background: white;
+   min-height: 300px;
+   width: 100%;
 }
 
 #stockchart_card .chart-wrapper .card-action {
@@ -148,37 +305,62 @@ button.timeperiod {
    width: 180px;
 }
 
+#stock_ticker_browser {
+   margin-top: 20px;
+   height: 92%;
+}
+
 .toggle-ticker {
-   cursor: pointer;
-   min-height: 80px !important;
-   min-width: 250px;
+   /* background: #E6ECF0; */
+   background: white;
+   display: flex;
+   flex-grow: 2;
+   border-radius: 0;
+   cursor: pointer;  
+   /* min-height: 80px !important; */
+   border-bottom: 1px solid rgba(160, 160, 160, 0.2);
+   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14);
+   width: 100%;
+   margin-top: 0 !important;   
+   margin-bottom: 0 !important;
+   padding: 0;
 }
 
 .toggle-ticker:focus {
-	color: #0288d1 !important;
+   color: #0288d1 !important;
+   border-radius: 5px;
+   background: #D2E4F0;
 	font-weight: 700;
 }
 
-.toggle-ticker .card-title {
-	float: left;
-	font-weight: 500;
-	color: rgb(183, 196, 216);
-	padding: 24px;
-	width: 85%;
+.toggle-ticker .title {
+	/* float: left; */
+   font-weight: 500;
+   font-size: 25px;
+   user-select: none;
+   color: rgb(183, 196, 216);
+   border-radius: 5px;
+   padding: 14px;
+   margin: 10px;
+   width: 100%;
+	/* padding: 24px; */
+	/* width: 85%; */
 }
 
-.toggle-ticker .card-content {
-	padding: 0 !important;
+.toggle-ticker .toggle-clickarea {
+   width: 100%;
 }
 
-.toggle-ticker .card-content .remove {
-	float: right;
+.toggle-ticker .remove {
+   /* float: right; */
+   margin-left: auto;
+   /* flex-grow: 2; */
 	height: 80px;
-	padding: 24px;
+	padding: 24px 30px 24px 24px;
 	width: 10%
 }
 
-.card .card-action {
+.stockchart .card-action {
 	border-top: none !important;
 	border-bottom: 1px solid rgba(160, 160, 160, 0.2);
 }
@@ -191,16 +373,16 @@ button.timeperiod {
 	z-index: -1;
 }
 
-div .card-content {
-	margin-top: 15px;
-}
-
 .domain {
 	display: none !important;
 }
 
 .c3-event-rects {
 	cursor: crosshair;
+}
+
+#search_bar {
+   background: white;
 }
 
 #search_bar .card-action {
@@ -239,12 +421,105 @@ div .card-content {
 }
 
 .positioned-mobile-search {
-   position: absolute;
-   margin-top: 42px;
-   opacity: 0.9;
+   visibility: visible;
+   position: fixed;
+   opacity: 1;
    z-index: 10001;
    width: 100%;
    left: 0;
    top: 0;
 }
 
+g.c3-legend-item {
+   visibility: hidden !important;
+}
+
+#stats_card {
+   display: flex;
+   min-height: 200px;
+   /* font-weight: 300; */
+}
+
+
+#stats_card .stats-quant {
+   height: 200px;
+}
+
+#stats_card .stats-quant .heading {
+   display: flex;
+   border-bottom: 1px solid rgba(160, 160, 160, 0.2); 
+}
+
+#stats_card .stats-quant .heading span{
+   width: 50%;
+}
+
+#stats_card .stats-quant .heading .price {
+   font-size: 25px;
+   text-align: left;
+}
+
+#stats_card .stats-quant .custom-card {
+   margin: 12px 0 12px 0;
+   padding-top: 3px !important;
+   background: white;
+}
+
+.stats-quant ul li {
+   display: flex;
+   width: 100%;
+   color: rgb(134, 143, 158);
+   padding: 7px 0 3px 0;
+   font-weight: 300;   
+   /* border-bottom: 2px solid #E6ECF0; */
+}
+
+.stats-quant span {
+   width: 100%;
+   margin-right: 0;
+   text-align: right;
+   color: black;
+}
+
+.stats-quant .heading .price {
+   font-weight: 300;
+}
+
+.stats-quant .heading {
+   margin: 20px 0 5px 0;
+}
+
+.stats-quant .heading .name {
+   margin-bottom: 5px;
+}
+
+.stats-quant p {
+   margin: 0;
+   text-align: right;
+   color:rgb(134, 143, 158);
+}
+
+.stats-quant .symbol {
+   color: black;
+   font-size: 15px;
+}
+
+.stats-summary p {
+   /* max-height: 200px; */
+   overflow: hidden;
+}
+
+button.show-more {
+   font-weight: 500;
+   color: #03a9f4;
+   background: none;
+   border: none;
+   padding: 0;   
+}
+
+.stats-summary p {
+   font-size: 12px;
+   color: rgb(134, 143, 158);
+   /* font-weight: 300;  */
+   line-height: 20px;
+}

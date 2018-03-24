@@ -28,7 +28,8 @@ function plot(dates, prices, range) {
    if (window.innerWidth > 600) {
       tick_toggle = true;
       padding_dimensions = {
-         right: 17
+         left: 30,
+         right: 30
       };
    }
 
@@ -47,6 +48,9 @@ function plot(dates, prices, range) {
 
    chart = c3.generate({
       padding: padding_dimensions,
+      size: {
+         height: 250
+      },
       data: {
          x: 'x',
          columns: [dates, prices],
@@ -69,7 +73,7 @@ function plot(dates, prices, range) {
                format: d3.format("$,")
             },
             min: Math.min.apply(Math, prices.slice(1, prices.length)),
-            show: tick_toggle
+            show: false
          }
       },
       point: {

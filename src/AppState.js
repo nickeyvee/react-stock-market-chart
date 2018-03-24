@@ -11,62 +11,63 @@ class AppState extends Component {
       super(props);
       // const socket = io.connect(process.env.REACT_APP_DOMAIN);
       this.state = {
-         stockData: [],
+         stockPlotData: [],
+         stockSnapshot: [],
+         stockSummary: [],
          dateRange: 0,
          activeSymbol: '',
-         // socket: socket,
          loading: false
       }
       this.setAppState = this.setAppState.bind(this);
       this.getTickerList = this.getTickerList.bind(this);
       this.getActiveSymbol = this.getActiveSymbol.bind(this);
-      // this.newSocketEvent = this.newSocketEvent.bind(this);
       this.loadingStatus = this.loadingStatus.bind(this);
       this.updateWindowWidth = this.updateWindowWidth.bind(this);
+      this.getStockSummary = this.getStockSummary.bind(this);
+      this.getSnapshot = this.getSnapshot.bind(this);
    }
 
    componentDidMount() {
 
-      // initalize websocket
-      // this.state.socket.on('connect', () => {
-      //    return console.warn('socket working! id: ' + this.state.socket.id);
-      // })
-
       // get stock data into our app
+
       axios.get(`/data/stocks`)
          .then(d => {
-            const stockData = d.data.map(stock => stock);
-            const activeSymbol = !stockData.length ? null : stockData[0][0].symbol;
+            const stockPlotData = d.data.map(stock => stock);
+            const activeSymbol = !stockPlotData.length ? null : stockPlotData[0][0].symbol;
             let dateRange = 12;
 
             if (activeSymbol) {
-               const diff = service.monthDiff(stockData[0][0].date, stockData[0][stockData[0].length - 1].date);
+               const diff = service.monthDiff(stockPlotData[0][0].date, stockPlotData[0][stockPlotData[0].length - 1].date);
                dateRange = service.deduceDateRange(diff);
             }
 
-            // console.log(stockData.length, activeSymbol, dateRange);
+            axios.get(`data/snapshot/${activeSymbol}`)
+               .then(stockSnapshot => {
+                  this.setAppState({
+                     'stockPlotData': stockPlotData,
+                     'stockSnapshot': stockSnapshot.data.price,
+                     'stockSummary': stockSnapshot.data.summaryProfile,
+                     'activeSymbol': activeSymbol,
+                     'dateRange': dateRange
+                  }, done => {
+                     if (stockPlotData.length === 0) {
+                        return;
+                     }
 
-            this.setAppState({
-               'stockData': stockData,
-               'activeSymbol': activeSymbol,
-               'dateRange': dateRange
-            }, done => {
-               // console.log(this.state.stockData);
-               // console.log(this.state.activeSymbol);
-               if (stockData.length === 0) {
-                  return;
-               }
+                     // console.log(this.state.stockSnapshot.data);
 
-               chart.draw(
-                  this.state.stockData,
-                  this.state.activeSymbol,
-                  this.state.dateRange,
-               )
+                     chart.draw(
+                        this.state.stockPlotData,
+                        this.state.activeSymbol,
+                        this.state.dateRange,
+                     )
 
-               // get window (viewport) size
-               this.updateWindowWidth();
-               window.addEventListener('resize', this.updateWindowWidth);
-            });
+                     // get window (viewport) size
+                     this.updateWindowWidth();
+                     window.addEventListener('resize', this.updateWindowWidth);
+                  });
+               })
          })
    }
 
@@ -87,14 +88,18 @@ class AppState extends Component {
 
    updateWindowWidth() {
       chart.draw(
-         this.state.stockData,
+         this.state.stockPlotData,
          this.state.activeSymbol,
          this.state.dateRange
       )
    }
 
-   newSocketEvent(event) {
-      // return this.state.socket.emit(event.name, event.data);
+   getSnapshot(symbol) {
+      return this.state.stockSnapshot;
+   }
+
+   getStockSummary(symbol) {
+      return this.state.stockSummary;
    }
 
    getActiveSymbol() {
@@ -102,7 +107,7 @@ class AppState extends Component {
    }
 
    getTickerList() {
-      return this.state.stockData.map(d => d);
+      return this.state.stockPlotData.map(d => d);
    }
 
    loadingStatus(bool) {
@@ -117,6 +122,8 @@ class AppState extends Component {
                   appState: this.state,
                   update: this.setAppState,
                   tickers: this.getTickerList(),
+                  snapshot: this.getSnapshot(),
+                  summary: this.getStockSummary(),
                   getActiveSymbol: this.getActiveSymbol(),
                   isLoading: this.loadingStatus
                })

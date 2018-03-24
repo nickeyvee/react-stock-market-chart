@@ -42,11 +42,7 @@ class TimeScale extends Component {
 
       service.timescale(this.props.active, newRange)
          .then(res => {
-            // this.props.socket.emit('timescale', {
-            // 	'data': res.data,
-            // 	'range': parseInt(res.range, 10)
-            // });
-            this.props.update({ stockData: res.data })
+            this.props.update({ stockPlotData: res.data })
             this.props.isLoading(false);
          })
    }

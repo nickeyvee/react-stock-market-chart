@@ -5,6 +5,7 @@ import './App.css';
 
 import StockChart from './components/StockChart.js';
 import TickerColumn from './components/TickerColumn.js';
+import Statistics from './components/Statistics.js';
 
 const chart = require('./chart/c3-chart.js');
 const service = require('./services/dataService.js');
@@ -33,14 +34,15 @@ class App extends Component {
          service.add(symbol, this.props.tickers, this.props.dateRange).then(data => {
             chart.draw(data, symbol, this.props.dateRange);
 
-            // this.props.socket.emit('add', {
-            //    'data': data,
-            //    'symbol': symbol,
-            //    'range': this.props.dateRange
-            // })
-
             this.props.isLoading(false);
-            this.props.update({ stockData: data, activeSymbol: symbol });
+            this.props.update({ stockPlotData: data, activeSymbol: symbol });
+         }).then(() => {
+            service.getStockSnapshot(symbol).then(stockSnapshot => {
+               this.props.update({
+                  'stockSnapshot': stockSnapshot.data.price,
+                  'stockSummary': stockSnapshot.data.summaryProfile,
+               });
+            })
          }).catch(err => {
             console.warn(err.message);
             this.props.isLoading(false);
@@ -53,26 +55,32 @@ class App extends Component {
       const state = this.props.appState;
       const tickers = this.props.tickers;
       return (
-         <div className="App" >
-            <div className="container">
+         <div className="App">
+            <div className="flex-container">
                <StockChart
                   appState={state}
+                  tickers={tickers}
+                  summary={this.props.summary}
+                  snapshot={this.props.snapshot}
                   isLoading={this.props.isLoading}
                   dateRange={state.dateRange}
-                  addStock={this.addStock}                  
+                  addStock={this.addStock}
                   update={this.props.update}
                   active={state.activeSymbol}
-                  // socket={state.socket}
                />
                <TickerColumn
                   tickers={tickers}
                   appState={state}
                   addStock={this.addStock}
+                  snapshot={this.props.snapshot}
                   isLoading={this.props.isLoading}
                   dateRange={state.dateRange}
                   update={this.props.update}
                   active={state.activeSymbol}
-               // socket={state.socket}
+               />
+               <Statistics
+                  summary={this.props.summary}
+                  snapshot={this.props.snapshot}
                />
             </div>
          </div>

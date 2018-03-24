@@ -23,6 +23,7 @@
 		"morgan": "~1.9.0",
 		"pm2": "^2.9.1",
 		"react": "^16.2.0",
+		"react-addons-css-transition-group": "^15.6.2",
 		"react-classnames": "^0.1.2",
 		"react-dom": "^16.2.0",
 		"react-measure": "^2.0.0",
