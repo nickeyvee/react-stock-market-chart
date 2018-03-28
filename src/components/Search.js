@@ -13,7 +13,6 @@ class Search extends Component {
 
 	onKeyPressEvent(event) {
 		if (event.key === 'Enter') {
-         // console.log(this.state.value);
 			this.props.addStock(this.state.value);
 		}
 	}

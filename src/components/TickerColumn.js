@@ -30,8 +30,10 @@ class TickerColumn extends Component {
    }
 
    toggleStock(event) {
-      console.log('click');
       const newSymbol = event.currentTarget.id;
+
+      // collapse summary
+      this.props.toggleSummary(false);
 
       if (newSymbol !== this.props.active) {
          chart.draw(this.props.tickers, newSymbol, this.props.dateRange);

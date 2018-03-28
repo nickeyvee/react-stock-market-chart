@@ -447,7 +447,9 @@ g.c3-legend-item {
 
 #stats_card .stats-quant .heading {
    display: flex;
-   border-bottom: 1px solid rgba(160, 160, 160, 0.2); 
+   border-bottom: 1px solid rgba(160, 160, 160, 0.2);
+   /* transition: opacity 0.5s; */
+   /* opacity: 0; */
 }
 
 #stats_card .stats-quant .heading span{
@@ -506,7 +508,7 @@ g.c3-legend-item {
 
 .stats-summary p {
    /* max-height: 200px; */
-   overflow: hidden;
+   /* overflow: hidden; */
 }
 
 button.show-more {
@@ -523,3 +525,21 @@ button.show-more {
    /* font-weight: 300;  */
    line-height: 20px;
 }
+
+.example-enter {
+   opacity: 0.01;
+ }
+ 
+ .example-enter.example-enter-active {
+   opacity: 1;
+   transition: opacity 500ms ease-in;
+ }
+ 
+ .example-leave {
+   opacity: 1;
+ }
+ 
+ .example-leave.example-leave-active {
+   opacity: 0.01;
+   transition: opacity 300ms ease-in;
+ }

@@ -13,8 +13,8 @@ class Price extends Component {
          <div id="price_label">
             <p className="price">{price != undefined ? '$ ' + price : ''}</p>
             <p className={`change ${change < 0 ? 'negative' : ''}`}>{
-               `${(change != undefined ? change.toFixed(2) + ' ' : '')}
-                ${(changePercent != undefined ? '(' + changePercent.toFixed(2) + '%)' : '')}`
+               `${(change != undefined ? (parseFloat(change).toFixed(2)) + ' ' : '')}
+                ${(changePercent != undefined ? '(' + (parseFloat(changePercent).toFixed(2)) + '%)' : '')}`
             }</p>
          </div>
       )

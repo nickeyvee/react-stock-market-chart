@@ -3,7 +3,7 @@
 Search any stock by their symbol. Can hold multiple stocks and display stock price data according to different time intervals.
 The application also syncs near-instantly across clients using websockets.
 
-![alt text](stockchart.gif)
+![screenshot](screenshot.png)
 
 ## Technologies Used
  - React.js

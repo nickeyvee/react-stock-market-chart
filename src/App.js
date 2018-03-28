@@ -15,9 +15,26 @@ class App extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         disabled: false
+         disabled: false,
+         extended: false,
+         height: 250
       }
       this.addStock = this.addStock.bind(this);
+      this.toggleSummary = this.toggleSummary.bind(this);      
+   }
+
+   toggleSummary(event) {
+      if (typeof event === 'boolean') {
+         this.setState({
+            extended: event,
+            height: (event ? document.getElementById('summary_zippy').clientHeight + 25 : 250)
+         });
+      } else {
+         this.setState({
+            extended: !this.state.extended,
+            height: (this.state.extended ? 250 : document.getElementById('summary_zippy').clientHeight + 25)
+         });
+      };
    }
 
    addStock(symbol) {
@@ -72,6 +89,7 @@ class App extends Component {
                   tickers={tickers}
                   appState={state}
                   addStock={this.addStock}
+                  toggleSummary={this.toggleSummary}
                   snapshot={this.props.snapshot}
                   isLoading={this.props.isLoading}
                   dateRange={state.dateRange}
@@ -79,6 +97,9 @@ class App extends Component {
                   active={state.activeSymbol}
                />
                <Statistics
+                  // toggleSummary={this.toggleSummary}
+                  // extended={this.state.extended}
+                  // height={this.state.height}
                   summary={this.props.summary}
                   snapshot={this.props.snapshot}
                />
