@@ -38,12 +38,15 @@ class TickerColumn extends Component {
       if (newSymbol !== this.props.active) {
          chart.draw(this.props.tickers, newSymbol, this.props.dateRange);
 
+         this.props.isLoading(true);
          this.props.update({ 'activeSymbol': newSymbol });
 
          service.getStockSnapshot(newSymbol).then(stockSnapshot => {
             this.props.update({
                'stockSnapshot': stockSnapshot.data.price,
                'stockSummary': stockSnapshot.data.summaryProfile,
+            },() => {
+               this.props.isLoading(false);
             });
          })
       }
@@ -61,8 +64,6 @@ class TickerColumn extends Component {
             </div>
          </div>
       );
-
-      // console.log(this.props.snapshot);
 
       return (
          <div id="stock_ticker_browser" className="js-tickers">

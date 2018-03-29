@@ -9,9 +9,6 @@ const styles = {
    transition: 'height .5s',
    overflow: 'hidden'
 },
-   styles_two = {
-      transition: 'opacity 0.2s ease-in'
-   },
    initialState = {
       currentStock: '',
       // transition: 'opacity 0.2s',
@@ -32,13 +29,12 @@ class Statistics extends Component {
       console.log(nextProps.snapshot.symbol);
       if (this.state.currentStock !== nextProps.snapshot.symbol) {
          this.setState(initialState);
-         // setTimeout(() => {
-         //    this.setState({ opacity: 1, currentStock: nextProps.snapshot.symbol });
-         // }, 800);
+
       }
    }
 
    toggleSummary(event) {
+      console.log(this.state.extended);
       this.setState({
          extended: !this.state.extended,
          height: (this.state.extended ? 250 : document.getElementById('summary_zippy').clientHeight + 25)
@@ -81,28 +77,28 @@ class Statistics extends Component {
             <div className="stats-quant">
                <span>Statistics</span>
                <div className="custom-card">
-                  <div className="heading" style={{ color: this.state.color }}>
+                  <div className={`heading ${this.props.loading ? "loading" : ""}`}>
                      <span className="price">{price != undefined ? '$ ' + price : ''}</span>
                      <span>
                         <p className="symbol">{symbol != undefined ? symbol : ''}</p>
                         <p className="name">{name != undefined ? name : ''}</p>
                      </span>
                   </div>
-                  <ul style={{ transition: this.state.transition, opacity: this.state.opacity }}>
-                     <li>Open <span>{this.props.snapshot.regularMarketOpen}</span></li>
-                     <li>High <span>{this.props.snapshot.regularMarketDayHigh}</span></li>
-                     <li>Low <span>{this.props.snapshot.regularMarketDayLow}</span></li>
-                     <li>Volume <span>{numberAbbreviated(this.props.snapshot.regularMarketVolume)}</span></li>
-                     <li>Market&nbsp;Cap <span>{numberAbbreviated(this.props.snapshot.marketCap)}</span></li>
+                  <ul>
+                     <li>Open <span className={this.props.loading ? "loading" : ""}>{this.props.snapshot.regularMarketOpen}</span></li>
+                     <li>High <span className={this.props.loading ? "loading" : ""}>{this.props.snapshot.regularMarketDayHigh}</span></li>
+                     <li>Low <span className={this.props.loading ? "loading" : ""}>{this.props.snapshot.regularMarketDayLow}</span></li>
+                     <li>Volume <span className={this.props.loading ? "loading" : ""}>{numberAbbreviated(this.props.snapshot.regularMarketVolume)}</span></li>
+                     <li>Market&nbsp;Cap <span className={this.props.loading ? "loading" : ""}>{numberAbbreviated(this.props.snapshot.marketCap)}</span></li>
                   </ul>
                </div>
             </div>
-            <div className="stats-summary" style={{ transition: this.state.transition, opacity: this.state.opacity }}>
+            <div className="stats-summary">
                <span>About</span>
                <div style={{ ...styles, height: this.state.height }}>
                   <div id="summary_zippy" style={{ height: 'auto' }}>
-                     <p>{/* {this.state.extended ? this.props.summary.longBusinessSummary : condensedSummary()} */
-                        this.props.summary.longBusinessSummary}
+                     <p className={this.props.loading ? "loading" : ""}>
+                        {this.props.summary.longBusinessSummary}
                      </p>
                   </div>
                </div>
@@ -110,7 +106,7 @@ class Statistics extends Component {
                   {this.state.extended ? 'COLLAPSE' : 'SHOW MORE'}
                </button>
             </div>
-         </div >
+         </div>
       )
    }
 }

@@ -448,8 +448,7 @@ g.c3-legend-item {
 #stats_card .stats-quant .heading {
    display: flex;
    border-bottom: 1px solid rgba(160, 160, 160, 0.2);
-   /* transition: opacity 0.5s; */
-   /* opacity: 0; */
+   transition: 0.3s;
 }
 
 #stats_card .stats-quant .heading span{
@@ -506,9 +505,8 @@ g.c3-legend-item {
    font-size: 15px;
 }
 
-.stats-summary p {
-   /* max-height: 200px; */
-   /* overflow: hidden; */
+.stats-quant ul span {
+   transition: 0.3s;   
 }
 
 button.show-more {
@@ -523,6 +521,7 @@ button.show-more {
    font-size: 12px;
    color: rgb(134, 143, 158);
    /* font-weight: 300;  */
+   transition: 0.3s;   
    line-height: 20px;
 }
 

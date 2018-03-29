@@ -80,9 +80,7 @@ class AppState extends Component {
          if (this.props.debug) {
             console.log('setAppState', JSON.stringify(this.state));
          }
-         if (callback) {
-            callback();
-         }
+         if (callback) callback();
       })
    }
 

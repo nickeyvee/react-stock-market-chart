@@ -97,9 +97,7 @@ class App extends Component {
                   active={state.activeSymbol}
                />
                <Statistics
-                  // toggleSummary={this.toggleSummary}
-                  // extended={this.state.extended}
-                  // height={this.state.height}
+                  loading={state.loading}                            
                   summary={this.props.summary}
                   snapshot={this.props.snapshot}
                />
