@@ -26,7 +26,7 @@ class Statistics extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
-      console.log(nextProps.snapshot.symbol);
+      // console.log(nextProps.snapshot.symbol);
       if (this.state.currentStock !== nextProps.snapshot.symbol) {
          this.setState(initialState);
 
@@ -34,7 +34,7 @@ class Statistics extends Component {
    }
 
    toggleSummary(event) {
-      console.log(this.state.extended);
+      // console.log(this.state.extended);
       this.setState({
          extended: !this.state.extended,
          height: (this.state.extended ? 250 : document.getElementById('summary_zippy').clientHeight + 25)
@@ -42,14 +42,14 @@ class Statistics extends Component {
    };
 
    render() {
-      const price = this.props.snapshot.regularMarketPrice;
-      const summArray = this.props.summary.longBusinessSummary;
-      const name = this.props.snapshot.longName;
-      const symbol = this.props.snapshot.symbol;
+      // const price = this.props.snapshot.regularMarketPrice;
+      // const summArray = this.props.summary.longBusinessSummary;
+      // const name = this.props.snapshot.longName;
+      // const symbol = this.props.snapshot.symbol;
 
       const condensedSummary = () => {
-         if (summArray !== undefined) {
-            return summArray.slice(0, 400).trim() + '...';
+         if (typeof this.props.summary.longBusinessSummary !== 'undefined') {
+            return this.props.summary.longBusinessSummary.slice(0, 400).trim() + '...';
          }
       };
 
@@ -78,10 +78,10 @@ class Statistics extends Component {
                <span>Statistics</span>
                <div className="custom-card">
                   <div className={`heading ${this.props.loading ? "loading" : ""}`}>
-                     <span className="price">{price != undefined ? '$ ' + price : ''}</span>
+                     <span className="price">{typeof this.props.snapshot.regularMarketPrice != 'undefined' ? '$ ' + this.props.snapshot.regularMarketPrice : ''}</span>
                      <span>
-                        <p className="symbol">{symbol != undefined ? symbol : ''}</p>
-                        <p className="name">{name != undefined ? name : ''}</p>
+                        <p className="symbol">{typeof this.props.snapshot.symbol != 'undefined' ? this.props.snapshot.symbol : ''}</p>
+                        <p className="name">{typeof this.props.snapshot.longName != 'undefined' ? this.props.snapshot.longName : ''}</p>
                      </span>
                   </div>
                   <ul>

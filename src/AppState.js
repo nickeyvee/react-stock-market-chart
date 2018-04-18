@@ -28,7 +28,6 @@ class AppState extends Component {
    }
 
    componentDidMount() {
-
       // get stock data into our app
 
       axios.get(`/data/stocks`)

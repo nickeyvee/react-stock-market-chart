@@ -82,7 +82,7 @@ function getOneStockBySymbol(symbol, range, period) {
  */
 function storeStocksLocally(data) {
    // input validation
-   if (data === undefined) {
+   if (typeof data === 'undefined') {
       throw new Error('No paramters provided');
    }
    // save new stocks
@@ -183,7 +183,7 @@ function checkNullValues(data) {
       // checks for undefined values.
       for (let company in data) {
          if (data.hasOwnProperty(company)) {
-            if (data[company][0] === undefined) {
+            if (typeof data[company][0] === 'undefined') {
                delete data[company];
             }
          }
