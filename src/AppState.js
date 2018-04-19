@@ -9,13 +9,12 @@ import service from './services/dataService.js';
 class AppState extends Component {
    constructor(props) {
       super(props);
-      // const socket = io.connect(process.env.REACT_APP_DOMAIN);
       this.state = {
          stockPlotData: [],
          stockSnapshot: [],
          stockSummary: [],
          dateRange: 0,
-         activeSymbol: '',
+         activeSymbol: 'TSLA',
          loading: false
       }
       this.setAppState = this.setAppState.bind(this);
@@ -28,46 +27,49 @@ class AppState extends Component {
    }
 
    componentDidMount() {
-      // get stock data into our app
+      // get stock data into our app for our selected stock,
+      // will get data for ONE stock by default
+      const stockData = axios.get(`/data/stocks`).then(d => {
+         const stockPlotData = d.data.map(stock => stock);
+         const activeSymbol = !stockPlotData.length ? null : stockPlotData[0][0].symbol;
+         let dateRange = 12;
 
-      axios.get(`/data/stocks`)
-         .then(d => {
-            const stockPlotData = d.data.map(stock => stock);
-            const activeSymbol = !stockPlotData.length ? null : stockPlotData[0][0].symbol;
-            let dateRange = 12;
+         if (activeSymbol) {
+            const diff = service.monthDiff(stockPlotData[0][0].date, stockPlotData[0][stockPlotData[0].length - 1].date);
+            dateRange = service.deduceDateRange(diff);
+         }
+         return {
+            'stockPlotData': stockPlotData,
+            'activeSymbol': activeSymbol,
+            'dateRange': dateRange
+         }
+      });
 
-            if (activeSymbol) {
-               const diff = service.monthDiff(stockPlotData[0][0].date, stockPlotData[0][stockPlotData[0].length - 1].date);
-               dateRange = service.deduceDateRange(diff);
+      const snapshot = axios.get(`data/snapshot/${this.state.activeSymbol}`).then(stockSnapshot => stockSnapshot);
+
+      Promise.all([stockData, snapshot]).then(payload => {
+         this.setAppState({
+            'stockPlotData': payload[0].stockPlotData,
+            'stockSnapshot': payload[1].data.price,
+            'stockSummary': payload[1].data.summaryProfile,
+            'activeSymbol': payload[0].activeSymbol,
+            'dateRange': payload[0].dateRange
+         }, done => {
+            // draw nothing when no stock data exists
+            // will break out of function
+            if (payload[0].stockPlotData.length === 0) {
+               return;
             }
-
-            axios.get(`data/snapshot/${activeSymbol}`)
-               .then(stockSnapshot => {
-                  this.setAppState({
-                     'stockPlotData': stockPlotData,
-                     'stockSnapshot': stockSnapshot.data.price,
-                     'stockSummary': stockSnapshot.data.summaryProfile,
-                     'activeSymbol': activeSymbol,
-                     'dateRange': dateRange
-                  }, done => {
-                     if (stockPlotData.length === 0) {
-                        return;
-                     }
-
-                     // console.log(this.state.stockSnapshot.data);
-
-                     chart.draw(
-                        this.state.stockPlotData,
-                        this.state.activeSymbol,
-                        this.state.dateRange,
-                     )
-
-                     // get window (viewport) size
-                     this.updateWindowWidth();
-                     window.addEventListener('resize', this.updateWindowWidth);
-                  });
-               })
-         })
+            chart.draw(
+               this.state.stockPlotData,
+               this.state.activeSymbol,
+               this.state.dateRange,
+            )
+            // get window (viewport) size
+            this.updateWindowWidth();
+            window.addEventListener('resize', this.updateWindowWidth);
+         });
+      })
    }
 
    componentWillUnmount() {
