@@ -7,10 +7,11 @@
     "node": "8.9.4"
   },
 	"scripts": {
-		"start": "react-scripts build && nodemon ./bin/www",
+    "start": "node ./bin/www",
+    "heroku-postbuild": "react-scripts build",
     "build": "react-scripts build",
-    "live": "react-scripts start",
-		"dev": "nodemon ./bin/www",
+    "dev-client": "react-scripts start",
+		"dev-server": "nodemon ./bin/www",
 		"test": "mocha ./tests/main"
 	},
 	"dependencies": {
@@ -41,7 +42,6 @@
 		"utf-8-validate": "^4.0.0",
 		"yahoo-finance": "^0.3.5"
 	},
-	"proxy": "http://localhost:5000",
 	"devDependencies": {
 		"chai": "^4.1.2",
 		"mocha": "^4.1.0",
