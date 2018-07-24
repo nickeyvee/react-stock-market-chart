@@ -7,8 +7,9 @@
     "node": "8.9.4"
   },
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"start": "react-scripts build && nodemon ./bin/www",
+    "build": "react-scripts build",
+    "live": "react-scripts start",
 		"dev": "nodemon ./bin/www",
 		"test": "mocha ./tests/main"
 	},
